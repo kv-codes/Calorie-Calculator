@@ -9,8 +9,8 @@ function Login() {
     }
   return (
     <div>
-      <h1>Login here via Google OAuth, click 'submit' to sign in</h1>
-      <button type = "button" onClick={handleClick}>Submit</button>
+      <h1>Please login with google to proceed</h1>
+      <button type = "button" onClick={handleClick}>Login with google!</button>
     </div>
   );
   
