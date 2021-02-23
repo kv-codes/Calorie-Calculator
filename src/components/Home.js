@@ -1,77 +1,70 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react'
+import Result from './Result';
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      age: null,
-    };
-  }
-  mySubmitHandler = (event) => {
-    event.preventDefault();
-    let age = this.state.age;
-    if (!Number(age)) {
-      alert("Your age must be a number");
+class Form extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            weight: 0,
+            height: 0,
+            bmi: 0
+        }
+        this.handleHeightChange = this.handleHeightChange.bind(this);
+        this.handleWeightChange = this.handleWeightChange.bind(this);
+        this.getBMI = this.getBMI.bind(this);
     }
-  }
-  myChangeHandler = (event) => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    this.setState({[nam]: val});
-  }
-  render() {
-    return (
-      <form onSubmit={this.mySubmitHandler}>
-      <h1>Welcome to the Calorie Calculator!</h1>
-      <h2>Please enter your info below then click the 'submit' button.</h2> 
-      <br/>
-      <br/>
-      <br/>   
-      <p>Age:</p>
-      <input
-        type='number'
-        name='age'
-        onChange={this.myChangeHandler}
-      />
-      <br/>
-      <br/>
-      <p>Gender:</p>
-      <button onclick="male">Male</button>
-      <button onclick="female">Female</button>
-      <br/>
-      <br/>
-      <p>Height(inches):</p>
-      <input
-      type='number'
-      name='gender'
-      onChange={this.myChangeHandler}
-      />
-      <br/>
-      <br/>
-      <p>Weight(lbs):</p>
-      <input
-      type='number'
-      name='gender'
-      onChange={this.myChangeHandler}
-      />
-      <br/>
-      <br/>
-      <p>Exercise level:</p>
-      <button onclick="low">Low</button>
-      <button onclick="moderate">Moderate</button>
-      <button onclick="intense">Intense</button>
-      <br/>
-      <br/>
 
-      <br/>
-      <br/>
-      <input type='submit' />
-      </form>
-    );
-  }
+    handleWeightChange(event){
+        this.setState({weight: event.target.value})
+    }
+
+    handleHeightChange(event){
+        this.setState({height: event.target.value})
+    }
+
+    getBMI(){
+        var squaredHeight = this.state.height * this.state.height;
+        this.setState({bmi: this.state.weight / squaredHeight});
+    }
+
+    render() {
+        return (
+            <div>
+                <hr/>
+              
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-3"></div>
+                        <div className="col-lg-6">
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label text-right">Weight</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" id="weight" name="weight" onChange={this.handleWeightChange} placeholder="Enter Your Weight"/>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label text-right">Height</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" id="height" name="height" onChange={this.handleHeightChange} placeholder="Enter Your Height"/>
+                                </div>
+                            </div>
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMI} style={{float: 'left', marginLeft: '93px'}}>Get BMI</button>
+                        </div>
+                        <br/><br/>                      
+                        <div className="col-lg-3"></div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-3"></div>
+                        <div className="col-lg-6">
+                            {this.state.bmi !== 0 ? (<Result result={this.state.bmi} bmi={this.state.bmi}/>) : null}
+                        </div>
+                        <div className="col-lg-3"></div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
-ReactDOM.render(<Home />, document.getElementById('root'));
-export default Home;
+export default Form;
