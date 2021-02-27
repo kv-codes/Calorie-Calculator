@@ -4,7 +4,7 @@ class Result extends Component {
     render() {
         return (
             <div>
-                <h2>Result is:</h2>
+                <h2>Your {this.props.label}: {this.props.result}</h2>
             </div>
 
 
