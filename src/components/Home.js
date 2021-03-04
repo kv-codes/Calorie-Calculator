@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Result from './Result';
+import BmrResults from './BmrResults';
 
 class Form extends Component {
 
@@ -8,13 +9,16 @@ class Form extends Component {
         this.state = {
             gender: "",
             activity: "",
+            averages: [],
             weight: 0,
             height: 0,
             age: 0,
             bmi: 0,
             bmr:0,
             calDaily: 0,
-            calLoss: 0
+            calLoss: 0,
+            avgbmis:[0],
+            avgbmi: {}
         }
         this.handleHeightChange = this.handleHeightChange.bind(this);
         this.handleWeightChange = this.handleWeightChange.bind(this);
@@ -27,6 +31,14 @@ class Form extends Component {
         this.getCALLOSS = this.getCALLOSS.bind(this);
     }
 
+    componentDidMount() {
+        fetch("http://localhost:3001/averages/list")
+        .then(response => response.json())
+        .then( responseJson=> {
+
+          this.setState({ averages:responseJson.data });
+        });
+    }     
     handleWeightChange(event){
         this.setState({weight: event.target.value})
     }
@@ -51,8 +63,22 @@ class Form extends Component {
     }
 
     getBMI(){
-        var squaredHeight = this.state.height * this.state.height;
-        this.setState({bmi: (this.state.weight / squaredHeight)*(703)});
+        console.log('averages', this.state.averages);
+        console.log('age', this.state.age);
+
+        var squaredHeight = parseInt(this.state.height) * parseInt(this.state.height);
+        let avgBmi = this.state.averages.find(itm => itm.age === parseInt(this.state.age));
+        console.log(avgBmi)
+        this.setState({
+            bmi: parseFloat((this.state.weight / squaredHeight)*(703)).toFixed(2),
+            
+            avgbmi: avgBmi
+        });
+
+        
+
+
+
 
     }
 
@@ -81,7 +107,7 @@ class Form extends Component {
             bmrCalc = 655.1 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
             console.log(`Gender is female ${bmrCalc}`)
         }
-        this.setState({bmr: bmrCalc});
+        this.setState({bmr: parseFloat(bmrCalc).toFixed(2)});
         console.log(bmrCalc);
     }
 
@@ -102,7 +128,7 @@ class Form extends Component {
             calCalc = bmrCalc * 1.725;
         }
         
-        this.setState({calDaily: calCalc});       
+        this.setState({calDaily: parseFloat(calCalc).toFixed(2)});       
     }
 
     getCALLOSS() {
@@ -111,16 +137,17 @@ class Form extends Component {
         // if (calCalc===this.state.calDaily) {
             calcLoss = calCalc - 500;
         // }
-        this.setState({calLoss:calcLoss })
+        this.setState({calLoss:parseFloat(calcLoss ).toFixed(2)})
     }
+
+
 
 
     render() {
         return (
             <div>
                 <hr/>
-                <h1>Welcome to the health calculator! </h1>
-                <h2>Here we provide you the daily caloric information you'll need to either healthily lose weight or maintain your current weight</h2>
+                <h1>Welcome to the Calorie Calculator! </h1>
 
                 <p><b>1) Calculate BMI. Please enter your height and weight:</b></p>
               
@@ -141,27 +168,19 @@ class Form extends Component {
                                 </div>
                             </div>
 
-                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMI} style={{float: 'left', marginLeft: '93px'}}>Get BMI</button>
-                            <div className="col-lg-6">
-                             {this.state.bmi !== 0 ? (<Result result={this.state.bmi} bmi={this.state.bmi} label="BMI"/>) : null}
-                            </div>
-
-                            <p><b>2) Calculate your BMR. Please enter your age, gender and active level:</b></p>
-
-
                             <div className="form-group row">
-                                <label classname="col-sm-2 col-form-label text-right">Age</label>
+                                <label className="col-sm-2 col-form-label text-right">Age</label>
                                 <div className="col-sm-10">
                                     <input type="text" className="form-control" id="age" name="age"
                                     onChange={this.handleAgeChange} placeholder="Enter your Age" />
                                 </div>
                             </div>
+
                             <br></br>
                             <br></br>
 
-                            
                             <div className="inputwrap">
-                                <label className="label">Gender</label>
+                                <label className="label"><b>Gender</b></label>
                                 <label>
                                     <input
                                     type="radio"
@@ -187,9 +206,9 @@ class Form extends Component {
                                 
                             </div>
                             <br></br>
-                            <br></br>
+
                             <div className="inputwrap">
-                                <label className="label">Active Level:</label>
+                                <label className="label"><b>Fitness Level:</b></label>
                                 <br></br>
                                 <label>
                                     <input
@@ -239,9 +258,20 @@ class Form extends Component {
                                     Very active (hard exercise/sports 6-7 days a week)
                                 </label>
                             </div>
+
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMI} style={{float: 'left', marginLeft: '93px'}}>Get BMI</button>
+                            <div className="col-lg-6">
+                             {this.state.bmi !== 0 ? (<Result result={this.state.bmi} averageBmi = {this.state.avgbmi} label="BMI"/>) : null}
+                            </div>
+
+                            <br></br>
+
+                            <p><b>2) Calculate your BMR. Please enter your age, gender and active level:</b></p>
+
+
                             <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMR} style={{float: 'left', marginLeft: '93px'}}>Get BMR</button>
                             <div className="col-lg-6">
-                             {this.state.bmr !== 0 ? (<Result result={this.state.bmr} bmr={this.state.bmr} label="BMR"/>) : null}
+                             {this.state.bmr !== 0 ? (<BmrResults result={this.state.bmr} bmr={this.state.bmr} label="BMR"/>) : null}
                             </div>
                             <br></br>
                             <br></br>
@@ -249,17 +279,17 @@ class Form extends Component {
  
                             <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALDAILY} style={{float: 'left', marginLeft: '93px'}}>Get Daily Calories Recommended</button>
                             <div className="col-lg-6">
-                             {this.state.calDaily !== 0 ? (<Result result={this.state.calDaily} calDaily={this.state.calDaily} label="Recommended daily caloric intake"/>) : null}
+                             {this.state.calDaily !== 0 ? (<BmrResults result={this.state.calDaily} calDaily={this.state.calDaily} label="Recommended daily caloric intake"/>) : null}
                             </div>
                             <br></br>
                             <br></br>
 
-                            <p><b>Calories for weight loss:</b></p>
+                            <p><b>4) Calories for weight loss:</b></p>
 
                             <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALLOSS} style={{float: 'left', marginLeft: '93px'}}>Get Calories for healthy weight loss</button>
 
                             <div className="col-lg-6">
-                             {this.state.calLoss !== 0 ? (<Result result={this.state.calLoss} calLoss={this.state.calLoss} label="Recommended daily caloric intake for healthy weight loss"/>) : null}
+                             {this.state.calLoss !== 0 ? (<BmrResults result={this.state.calLoss} calLoss={this.state.calLoss} label="Recommended daily caloric intake for healthy weight loss"/>) : null}
                             </div>                            
 
                         </div>

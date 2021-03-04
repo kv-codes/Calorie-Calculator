@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import BmiCalculator from './components/BmiCalculator';
 import CalorieCalculator from './components/CalorieCalculator';
 
 
@@ -16,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <BmiCalculator title={this.state.title}/> 
+
         <CalorieCalculator title={this.state.title}/>
     
       </div>

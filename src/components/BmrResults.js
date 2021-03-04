@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-class Result extends Component {
+class BmrResults extends Component {
     render() {
         return (
             <div>
                 <p>Your {this.props.label}: {this.props.result}</p>
-                <p>The average bmi for your age is {this.props.averageBmi.bmi}</p>
+
             </div>
 
 
@@ -13,4 +13,4 @@ class Result extends Component {
     }
 
 }
-export default Result;
+export default BmrResults;

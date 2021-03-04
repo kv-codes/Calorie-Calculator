@@ -4,19 +4,14 @@ import Home from './Home';
 
 class CalorieCalculator extends Component {
 
-    constructor(props){
-        super(props);
-    }
+
 
     render() {
 
         return (
             <div>
-                <h2></h2>
-
-
-                
-                
+                <Home/>
+               
             </div>
         )
     }
