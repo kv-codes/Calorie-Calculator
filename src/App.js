@@ -1,40 +1,25 @@
-import React, {Component} from 'react';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Welcome from './components/Welcome';
-import Login from './components/Login';
-import Home from './components/Home';
+import React, { Component } from 'react';
 import './App.css';
+import CalorieCalculator from './components/CalorieCalculator';
+
 
 class App extends Component {
-  render(){
+  
+  constructor(){
+    super();
+    this.state = {
+      title: "BMI Calculator" 
+    }
+  } 
 
-  return (
-    <BrowserRouter>
+  render() {
+    return (
+      <div className="App">
+
+        <CalorieCalculator title={this.state.title}/>
     
-    <div className="container">
-      <Switch>
-        <Route exact path="/">
-          <Welcome />
-        </Route>
-
-        <Route path="/Login">
-          <Login />
-        </Route>
-
-        <Route path="/Home">
-          <Home />
-        </Route>
-
-
-
-
-
-      </Switch>  
-
-    </div>
-  </BrowserRouter>
-
-  );
+      </div>
+    );
   }
 }
 
