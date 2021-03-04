@@ -149,7 +149,7 @@ class Form extends Component {
                 <hr/>
                 <h1>Welcome to the Calorie Calculator! </h1>
 
-                <p><b>1) Calculate BMI. Please enter your height and weight:</b></p>
+                <p><b>1) Calculate BMI(Body Mass Index):</b></p>
               
                 <div className="container">
                     <div className="row">
@@ -259,17 +259,18 @@ class Form extends Component {
                                 </label>
                             </div>
 
-                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMI} style={{float: 'left', marginLeft: '93px'}}>Get BMI</button>
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMI} style={{float: 'center', marginLeft: '93px'}}>Get BMI</button>
+
                             <div className="col-lg-6">
                              {this.state.bmi !== 0 ? (<Result result={this.state.bmi} averageBmi = {this.state.avgbmi} label="BMI"/>) : null}
                             </div>
 
                             <br></br>
 
-                            <p><b>2) Calculate your BMR. Please enter your age, gender and active level:</b></p>
+                            <p><b>2) Calculate BMR(Basal Metabolic Weight):</b></p>
 
 
-                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMR} style={{float: 'left', marginLeft: '93px'}}>Get BMR</button>
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getBMR} style={{float: 'center', marginLeft: '93px'}}>Get BMR</button>
                             <div className="col-lg-6">
                              {this.state.bmr !== 0 ? (<BmrResults result={this.state.bmr} bmr={this.state.bmr} label="BMR"/>) : null}
                             </div>
@@ -277,19 +278,19 @@ class Form extends Component {
                             <br></br>
                             <p><b>3) Calories to maintain weight:</b></p>
  
-                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALDAILY} style={{float: 'left', marginLeft: '93px'}}>Get Daily Calories Recommended</button>
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALDAILY} style={{float: 'center', marginLeft: '93px'}}>Get Daily Calories Recommended</button>
                             <div className="col-lg-6">
-                             {this.state.calDaily !== 0 ? (<BmrResults result={this.state.calDaily} calDaily={this.state.calDaily} label="Recommended daily caloric intake"/>) : null}
+                             {this.state.calDaily !== 0 ? (<BmrResults result={this.state.calDaily} calDaily={this.state.calDaily} label="daily intake"/>) : null}
                             </div>
                             <br></br>
                             <br></br>
 
                             <p><b>4) Calories for weight loss:</b></p>
 
-                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALLOSS} style={{float: 'left', marginLeft: '93px'}}>Get Calories for healthy weight loss</button>
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={this.getCALLOSS} style={{float: 'center', marginLeft: '93px'}}>Get Calories for healthy weight loss</button>
 
                             <div className="col-lg-6">
-                             {this.state.calLoss !== 0 ? (<BmrResults result={this.state.calLoss} calLoss={this.state.calLoss} label="Recommended daily caloric intake for healthy weight loss"/>) : null}
+                             {this.state.calLoss !== 0 ? (<BmrResults result={this.state.calLoss} calLoss={this.state.calLoss} label="daily intake"/>) : null}
                             </div>                            
 
                         </div>
